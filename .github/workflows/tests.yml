@@ -1,0 +1,29 @@
+name: Test Python App
+
+on:
+  push:
+    branches:
+      - '*'  # Запускать при любом пуше в репозиторий
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest  # Использовать последнюю версию Ubuntu для выполнения
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  # Шаг для получения репозитория
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5  # Шаг для настройки Python
+        with:
+          python-version: '3.12'  # Указать версию Python
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip  # Обновление pip
+          pip install -r requirements.txt  # Установка зависимостей из requirements.txt
+          pip install pytest httpx  # Установка библиотек для тестирования
+
+      - name: Run tests
+        run: |
+          python -m pytest tests/  # Запуск тестов
