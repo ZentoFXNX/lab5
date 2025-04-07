@@ -23,3 +23,4 @@ jobs:
         with:
           push: true
           tags: ${{ vars.DOCKERHUBUSERNAME }}/my-app:latest
+# 1
