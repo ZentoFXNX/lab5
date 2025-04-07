@@ -2,24 +2,24 @@ name: Build and Delivery
 
 on:
   workflow_run:
-    workflows: ["Test Python App"]  # Указываем имя рабочего процесса, который должен завершиться успешно
+    workflows: ["Test Python App"]
     types:
       - completed
 
 jobs:
   cd:
-    runs-on: ubuntu-latest  # Использовать последнюю версию Ubuntu для выполнения
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Запускать только при успешном завершении предыдущего рабочего процесса
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Login to Docker Hub
-        uses: docker/login-action@v3  # Логинимся в Docker Hub
+        uses: docker/login-action@v3
         with:
-          username: ${{ vars.DOCKERHUBUSERNAME }}  # Используем переменную для логина
-          password: ${{ secrets.DOCKERHUBTOKEN }}  # Используем секрет для токена
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6  # Сборка и публикация Docker-образа
+        uses: docker/build-push-action@v6
         with:
-          push: true  # Публиковать образ на Docker Hub
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest  # Тег для образа
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest
